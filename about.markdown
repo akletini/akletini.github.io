@@ -11,7 +11,7 @@ Hi, my name is Allen and I am a computer engineering student at Technische Hochs
 - development of distributed cloud applications
 - quality control of existing projects
 - conception and management of smaller scale applications
-- **_Tools:_** Java, Python, Docker, Kubernetes, k3d, Helm,PostgreSQL, MkDocs, Unit Tests, GCloud
+- **_Tools:_** Java, Python, Docker, Kubernetes, k3d, Helm, PostgreSQL, MkDocs, Unit Tests, GCloud
 
 ### Work experience
 
