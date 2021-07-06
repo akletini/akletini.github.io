@@ -1,30 +1,23 @@
 ---
 layout: post
 title: "Bachelor Thesis on text comparison algorithms"
-date: 2021-07-16 12:00:40 +0100
+date: 2021-07-06 12:00:40 +0100
 categories: jekyll update
 ---
 
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+This article will explain some special aspects of the software MultiTextCompare, which was developed during my bachelor thesis. Its main goal is to be able to compare any amount of text-based files (txt, xml, json), calculate a similarity rating for them and be able to show their diff for up to 3 files. Everything is done in Java 7... (let's not talk about that one).
 
-Jekyll requires blog post files to be named according to the following format:
+![image](/assets/images/Matrix_final.png)
 
-`YEAR-MONTH-DAY-title.MARKUP`
+The easiest approach is to compare two files at a time, while checking for equality of the given strings within the current line. Since equality is merely an extreme case of similarity, this approach is not sufficient.
 
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+There needs to be a way to measure the similarity of two given strings and there is:
 
-Jekyll also offers powerful support for code snippets:
+The concept of an edit distance can quantify how dissimilar two strings are by counting how many steps it would take to convert one string into another. With some additional math, this dissimilarity can be turned into a similarity percentage. While this solves the problem for a missing similarity rating, it still doesnt tell you how similar two files really are. What if they are indeed equal but one file has a line break at the start and every equal line is misaligned?
 
-{% highlight ruby %}
-def print_hi(name)
-puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
+Some additional thinking is needed for this. Maybe one could match similar strings within different lines and align them to be written on the same line index. More math... yay!
 
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
+While this might work for regular text files, XML- and JSON-files underlie a certain structure and contain a lot of markup, which adds additional overhead for calculations and may influence result quality. Especially on short lines, there may be a high impact of markup characters compared to actual content. Thankfully there are some powerful libraries in JDOM and Jackson to parse those two formats and compare their contents via the document trees. The principle here is to basically match equally named nodes of the corresponding tree graphs and compare their contents. This approach cuts out all possible markup and makes sure to only compare contexually similar nodes. Again this is more math and additionally some recursive programming thus being a lot of ~~pain~~ fun.
 
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]: https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+The codebase will be supplied on GitHub as soon as the project is finished :)
+
